@@ -1,0 +1,187 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Atlas",
+    "description": "Essa é uma documentação sobre a Atrlas api",
+    "version": "1.0.0",
+    "contact": {
+      "email": "matheus.acfer@nave.org.br"
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Cria um novo usuário",
+        "requestBody": {
+          "description": "Campos obrigatórios para criação de um usuário",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "name": "Pessoa de teste",
+                "email": "Emailde@teste"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Operação realizada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "4ad29ba5-0afd-4e6c-88d6-69bdd72c17ba",
+                  "admin": false,
+                  "name": "Pessoa de teste",
+                  "email": "Emailde@teste",
+                  "created_at": "2021-07-12T23:21:12.364Z",
+                  "updated_at": "2021-07-12T23:21:12.364Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email já esta sendo utilizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Email já cadastrado"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "Retorna todos os usuários",
+        "description": "Somente usuário `admin` pode acessar.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "user_id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Operação realizada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "itens": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "admin": {
+                        "type": "boolean"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "id": "4ad29ba5-0afd-4e6c-88d6-69bdd72c17ba",
+                    "admin": false,
+                    "name": "Pessoa de teste",
+                    "email": "Emailde@teste",
+                    "created_at": "2021-07-12T23:21:12.364Z",
+                    "updated_at": "2021-07-12T23:21:12.364Z"
+                  },
+                  {
+                    "id": "4ad29ba5-0afd-4e6c-88d6-69bdd72c17ba",
+                    "admin": true,
+                    "name": "Pessoa de teste 2",
+                    "email": "Emailde@teste-2",
+                    "created_at": "2021-07-12T23:21:12.364Z",
+                    "updated_at": "2021-07-12T23:21:12.364Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Usuário sem permissão ou não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Usuário sem permissão de listagem"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
